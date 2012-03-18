@@ -18,6 +18,7 @@
 
 - (IBAction) numberOfChannels_action: (id) sender;
 - (IBAction) movingCheckBox_action: (id) sender;
+- (IBAction) separatorsCheckBox_action: (id) sender;
 - (IBAction) colorBackg_action: (id) sender;
 - (IBAction) colorSeparators_action: (id) sender;
 

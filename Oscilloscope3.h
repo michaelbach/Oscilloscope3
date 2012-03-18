@@ -33,7 +33,7 @@ In Interface Builder: instantiate a Custom View, set it's class to Oscilloscope2
 	NSUInteger numberOfPoints, numberOfTraces, maxNumberOfTraces;
 	CGFloat width, height, fullscale, lineWidth;
 	NSColor *backgroundColor, *separatorColor;
-	BOOL isTraceZeroTop, isShiftTraces;
+	BOOL isTraceZeroTop, isShiftTraces, isDrawYZeroLines, isDrawYSeparators;
 }
 
 
@@ -56,6 +56,8 @@ In Interface Builder: instantiate a Custom View, set it's class to Oscilloscope2
 @property	(readwrite) CGFloat lineWidth;						// the pensize for the traces
 @property	(readwrite) BOOL isTraceZeroTop;					// trace ordering: trace zero is on top, or on bottom
 @property	(readwrite)	BOOL isShiftTraces;						// if YES: traces are moving, new values at right. Else just replacing
+@property	(readwrite)	BOOL isDrawYZeroLines;					// if YES: add y-zero lines
+@property	(readwrite)	BOOL isDrawYSeparators;					// if YES: add y-separator lines
 
 
 @end

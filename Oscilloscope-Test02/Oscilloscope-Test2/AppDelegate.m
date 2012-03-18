@@ -45,10 +45,13 @@ dispatch_source_t timerGCDOsci;
 			// random
 			//rVoltage = (2.0 * random() / (CGFloat)RAND_MAX - 1.0) * osci.fullscale;
 			// no, lets test whether the fullscale is ok
-			switch (counter2 % 4) {
-				case 1: rVoltage = osci.fullscale; break;
-				case 3: rVoltage = -osci.fullscale; break;
-				default: rVoltage = 0;
+			switch (counter2 % 8) {
+				case 1: case 2: 
+					rVoltage = osci.fullscale; break;
+				case 5: case 6: 
+					rVoltage = -osci.fullscale; break;
+				default: 
+					rVoltage = 0;
 			}
 			[voltages addObject: [NSNumber numberWithFloat: rVoltage]];
 		}
@@ -68,6 +71,10 @@ dispatch_source_t timerGCDOsci;
 
 - (IBAction) colorBackg_action: (id) sender {
 	[osci setBackgroundColor: [sender color]];
+}
+
+- (IBAction) separatorsCheckBox_action: (id) sender {
+	osci.isDrawYSeparators = ([sender state] == NSOnState);
 }
 - (IBAction) colorSeparators_action: (id) sender {
 	[osci setSeparatorColor: [sender color]];
