@@ -31,6 +31,7 @@ dispatch_source_t timerGCDOsci;
 	[numberOfChannels_outlet selectItemAtIndex: osci.numberOfTraces-1];
 	[colorBackg_outlet setColor: [osci backgroundColor]];
 	[colorSeparators_outlet setColor: [osci separatorColor]];
+	[colorYZeroLines_outlet setColor: [osci yZeroLinesColor]];
 	
 	// set up a grand-central-dispatch based timer task 
 	timerGCDOsci = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0));
@@ -73,11 +74,20 @@ dispatch_source_t timerGCDOsci;
 	[osci setBackgroundColor: [sender color]];
 }
 
+
 - (IBAction) separatorsCheckBox_action: (id) sender {
 	osci.isDrawYSeparators = ([sender state] == NSOnState);
 }
 - (IBAction) colorSeparators_action: (id) sender {
 	[osci setSeparatorColor: [sender color]];
+}
+
+
+- (IBAction)yZeroCheckBox_action:(id)sender {
+	[osci setIsDrawYZeroLines: ([sender state] == NSOnState)];
+}
+- (IBAction) colorYZeroLines_action: (id) sender {
+	[osci setYZeroLinesColor: [sender color]];
 }
 
 

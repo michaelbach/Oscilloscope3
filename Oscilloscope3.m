@@ -36,7 +36,9 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 		[self setNumberOfTraces: 2];
 		[self setIsShiftTraces: YES];
 		[self setIsDrawYZeroLines: YES];
+		[self setYZeroLinesColor: [NSColor blackColor]];
 		[self setIsDrawYSeparators: YES];
+		[self setSeparatorColor: [NSColor grayColor]];
 		[self setLineWidth: 1.0f];
 		allTraces = [[NSMutableArray arrayWithCapacity: maxNumberOfTraces] retain];
 		for (NSUInteger iTrace=0; iTrace<maxNumberOfTraces; ++iTrace) 
@@ -44,7 +46,6 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 		for (NSMutableArray *aTrace in allTraces)	// initialise all traces to 0.0
 			for (NSUInteger i=0; i<numberOfPoints; ++i) [aTrace addObject: [NSNumber numberWithFloat:0.0f]];
 		[self setBackgroundColor: [NSColor colorWithDeviceWhite: 0.9f alpha: 1.0f]];
-		[self setSeparatorColor: [NSColor grayColor]];
 		traceColors = [[NSMutableArray arrayWithCapacity: maxNumberOfTraces] retain];
 		[traceColors addObject: [NSColor colorWithDeviceHue: 0.667 saturation: 1.0 brightness: 0.6 alpha: 1.0]];	// dunkles Blau
 		[traceColors addObject: [NSColor colorWithDeviceHue: 0.250 saturation: 1.0 brightness: 0.5 alpha: 1.0]];	// dunkles Grün
@@ -118,11 +119,10 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 	}
 	
 	if ([self isDrawYZeroLines]) {		// draw y-zero lines (last so the pattern is lost)
-		CGFloat lengths[1] = {2};
-		CGContextSetLineDash(cgc, 0, lengths, 1);		
+		CGFloat lengths[1] = {2};  CGContextSetLineDash(cgc, 0, lengths, 1);		
 		for (NSUInteger iTrace = 0; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight - 0.5*traceHeight;
-			col = cgColorCreateFromNSColor(colorSpace, separatorColor);
+			col = cgColorCreateFromNSColor(colorSpace, yZeroLinesColor);
 			CGContextSetStrokeColorWithColor(cgc, col);
 			[self hLineContext: cgc x0:0 y:y x1:numPnts];
 			CGColorRelease(col);
@@ -214,6 +214,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 @synthesize height;
 @synthesize backgroundColor;
 @synthesize separatorColor;
+@synthesize yZeroLinesColor;
 @synthesize isShiftTraces;
 @synthesize lineWidth;
 @synthesize isDrawYZeroLines;
