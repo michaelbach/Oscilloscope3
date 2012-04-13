@@ -8,7 +8,6 @@
 
 static NSMutableArray  *traceColors, *allTraces; // has maxChannels objects, each is a mutable array of samples
 static CGContextRef cgc;
-CGColorSpaceRef colorSpace;
 #define kNumPointsMax1 2000
 static CGPoint cgPointsArray[kNumPointsMax1];
 
@@ -17,11 +16,11 @@ static CGPoint cgPointsArray[kNumPointsMax1];
 #define min(x,y) ((x) > (y)) ? (y) : (x)
 
 
-static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor *color) {
+static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 	NSColor *deviceColor = [color colorUsingColorSpaceName: NSDeviceRGBColorSpace];
 	CGFloat components[4];
 	[deviceColor getRed: &components[0] green: &components[1] blue: &components[2] alpha: &components[3]];
-	return CGColorCreate(inColorSpace, components);
+	return CGColorCreate(CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB), components);
 }
 
 
@@ -54,7 +53,6 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 		[traceColors addObject: [NSColor colorWithDeviceHue: 0.833 saturation: 1.0 brightness: 0.6 alpha: 1.0]];	// dunkles Magenta
 		[traceColors addObject: [NSColor colorWithDeviceHue: 0.125 saturation: 1.0 brightness: 0.6 alpha: 1.0]];	// dunkles Gelb
 
-		colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
 		//NSLog(@"Oscilloscope>init2");
 	}
 	return self;
@@ -66,9 +64,9 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 
 - (void) hLineContext: (CGContextRef) ctx x0: (CGFloat) x0 y: (CGFloat) y x1: (CGFloat) x1 {
 	CGPoint twoPoints[] = {CGPointMake(x0, y), CGPointMake(x1, y)};
-	CGContextBeginPath(cgc);
-	CGContextAddLines(cgc, twoPoints, 2);
-	CGContextStrokePath(cgc);	
+	CGContextBeginPath(ctx);
+	CGContextAddLines(ctx, twoPoints, 2);
+	CGContextStrokePath(ctx);	
 }
 
 
@@ -76,7 +74,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 	height = aRect.size.height; // so resizing works at least vertically
 	
 	cgc = [[NSGraphicsContext currentContext] graphicsPort];
-	CGColorRef col = cgColorCreateFromNSColor(colorSpace, backgroundColor);
+	CGColorRef col = cgColorCreateFromNSColor(backgroundColor);
 	CGContextSetFillColorWithColor(cgc, col);
 	CGContextFillRect(cgc, NSRectToCGRect(aRect));  // first fill the background
 	CGColorRelease(col);
@@ -86,7 +84,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 	if ([self isDrawYSeparators]) {		// draw trace separator lines
 		for (NSUInteger iTrace = 1; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight;
-			col = cgColorCreateFromNSColor(colorSpace, ySeparatorColor);
+			col = cgColorCreateFromNSColor(ySeparatorColor);
 			CGContextSetStrokeColorWithColor(cgc, col);
 			[self hLineContext: cgc x0:0 y:y x1:numPnts];
 			CGColorRelease(col);
@@ -98,7 +96,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 		CGContextSetLineWidth(cgc, self.lineWidth);
 		CGFloat yTrace = (isTraceZeroTop) ? (numberOfTraces-iTrace-0.5) : (iTrace+0.5);
 		CGContextBeginPath(cgc);
-		col = cgColorCreateFromNSColor(colorSpace, [traceColors objectAtIndex: (iTrace % traceColors.count)]);
+		col = cgColorCreateFromNSColor([traceColors objectAtIndex: (iTrace % traceColors.count)]);
 		CGContextSetStrokeColorWithColor(cgc, col);
 		
 		if (numPnts < kNumPointsMax1) {
@@ -123,7 +121,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 		CGFloat lengths[1] = {2};  CGContextSetLineDash(cgc, 0, lengths, 1);		
 		for (NSUInteger iTrace = 0; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight - 0.5*traceHeight;
-			col = cgColorCreateFromNSColor(colorSpace, yZeroLinesColor);
+			col = cgColorCreateFromNSColor(yZeroLinesColor);
 			CGContextSetStrokeColorWithColor(cgc, col);
 			[self hLineContext: cgc x0:0 y:y x1:numPnts];
 			CGColorRelease(col);

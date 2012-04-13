@@ -7,9 +7,10 @@
 //	History
 //	=======
 //
+//  2012-04-12  corrected inconsequential typo, dropped the colorspace argument
 //	2012-03-22	a number of asthetic improvements, also added setTraceToCGFloatArray & zero lines, some properties renamed
 //	2012-02-28	used "CGContextAddLines", should speed up
-//	2012-02-20	von Cocoa auf Quartz-Grafik (CoreGrafics) umgestellt
+//	2012-02-20	defected from Cocoa to Quartz graphics (CoreGrafics)
 //	2011-01-26	added lineWidth
 //	2010-03-21	renamed and extended "fullscale", general code cleanup
 //	2010-03-03	in "advanceWithSamples:" test if "numberOfTraces" is correct, else set. Same for "setTrace:"
