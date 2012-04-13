@@ -7,6 +7,7 @@
 //	History
 //	=======
 //
+//	2012-03-22	a number of asthetic improvements, also added setTraceToCGFloatArray & zero lines, some properties renamed
 //	2012-02-28	used "CGContextAddLines", should speed up
 //	2012-02-20	von Cocoa auf Quartz-Grafik (CoreGrafics) umgestellt
 //	2011-01-26	added lineWidth
@@ -32,15 +33,16 @@ In Interface Builder: instantiate a Custom View, set it's class to Oscilloscope2
 @interface Oscilloscope3 : NSView {
 	NSUInteger numberOfPoints, numberOfTraces, maxNumberOfTraces;
 	CGFloat width, height, fullscale, lineWidth;
-	NSColor *backgroundColor, *separatorColor, *yZeroLinesColor;
+	NSColor *backgroundColor, *ySeparatorColor, *yZeroLinesColor;
 	BOOL isTraceZeroTop, isShiftTraces, isDrawYZeroLines, isDrawYSeparators;
 }
 
 
-- (void) advanceWithSample: (CGFloat) sampleValue;				// switches to single channel mode
-- (void) advanceWithSamples: (NSArray *) sampleArrayOfNumbers;	// switches multichannel mode with the correct number of traces
-- (void) setTraceToSweep: (NSArray *) sweep;					// switches to single channel mode
-- (void) setTrace: (NSUInteger)iTrace toSweep:(NSArray*)sweep;	// switches multichannel mode; adjusts numberOfTraces if necessary
+- (void) advanceWithSample: (CGFloat) sampleValue;				// also switches to single channel mode
+- (void) advanceWithSamples: (NSArray *) sampleArrayOfNumbers;	// also switches multichannel mode with the correct number of traces
+- (void) setTraceToSweep: (NSArray *) sweep;					// also switches to single channel mode
+- (void) setTraceToCGFloatArray: (CGFloat *)sweep nSamples: (NSUInteger) nSamples;	// single channel with a C-array of CGFloats
+- (void) setTrace: (NSUInteger)iTrace toSweep:(NSArray*)sweep;	// also switches multichannel mode; adjusts numberOfTraces if necessary
 - (void) setTrace: (NSUInteger)iTrace toCGFloatArray: (CGFloat *)sweep nSamples: (NSUInteger) nSamples;	// multichannel with a C-array of CGFloats
 
 @property	(readwrite)	CGFloat fullscale;						// since we're bipolar: ± this value
@@ -52,7 +54,7 @@ In Interface Builder: instantiate a Custom View, set it's class to Oscilloscope2
 - (void)	setColor: (NSColor *) color;						// switches to single channel mode. Default: dark blue.
 - (void)	setColor: (NSColor *) color forTrace: (NSUInteger) iTrace;// multichannel; there are 7 predefined colors
 @property	(retain)	NSColor *backgroundColor;				// default: very light grey
-@property	(retain)	NSColor *separatorColor;				// default: grey
+@property	(retain)	NSColor *ySeparatorColor;				// default: grey
 @property	(retain)	NSColor *yZeroLinesColor;				// default: grey
 @property	(readwrite) CGFloat lineWidth;						// the pensize for the traces
 @property	(readwrite) BOOL isTraceZeroTop;					// trace ordering: trace zero is on top, or on bottom

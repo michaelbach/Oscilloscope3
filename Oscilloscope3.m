@@ -38,7 +38,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 		[self setIsDrawYZeroLines: YES];
 		[self setYZeroLinesColor: [NSColor blackColor]];
 		[self setIsDrawYSeparators: YES];
-		[self setSeparatorColor: [NSColor grayColor]];
+		[self setYSeparatorColor: [NSColor grayColor]];
 		[self setLineWidth: 1.0f];
 		allTraces = [[NSMutableArray arrayWithCapacity: maxNumberOfTraces] retain];
 		for (NSUInteger iTrace=0; iTrace<maxNumberOfTraces; ++iTrace) 
@@ -86,7 +86,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 	if ([self isDrawYSeparators]) {		// draw trace separator lines
 		for (NSUInteger iTrace = 1; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight;
-			col = cgColorCreateFromNSColor(colorSpace, separatorColor);
+			col = cgColorCreateFromNSColor(colorSpace, ySeparatorColor);
 			CGContextSetStrokeColorWithColor(cgc, col);
 			[self hLineContext: cgc x0:0 y:y x1:numPnts];
 			CGColorRelease(col);
@@ -119,6 +119,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 	}
 	
 	if ([self isDrawYZeroLines]) {		// draw y-zero lines (last so the pattern is lost)
+		CGContextSetLineWidth(cgc, 1);
 		CGFloat lengths[1] = {2};  CGContextSetLineDash(cgc, 0, lengths, 1);		
 		for (NSUInteger iTrace = 0; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight - 0.5*traceHeight;
@@ -151,8 +152,6 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 		}
 	}
 	[self setNeedsDisplay: YES];
-//	NSLog(@"%f", [[sampleArray objectAtIndex:0] floatValue]);
-//	NSLog(@"%f", [[[allTraces objectAtIndex: 0] objectAtIndex:10] floatValue]);
 }
 
 
@@ -190,6 +189,11 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 }
 
 
+- (void) setTraceToCGFloatArray: (CGFloat *)sweep nSamples: (NSUInteger) nSamples {
+	[self setNumberOfTraces: 1];  [self setTrace: 0 toCGFloatArray: (CGFloat *)sweep nSamples: (NSUInteger) nSamples];
+}
+
+
 - (void) setColor: (NSColor *) color {
 	numberOfTraces = 1;  [traceColors replaceObjectAtIndex: 0 withObject: color];
 }
@@ -213,7 +217,7 @@ static CGColorRef cgColorCreateFromNSColor(CGColorSpaceRef inColorSpace, NSColor
 @synthesize width;
 @synthesize height;
 @synthesize backgroundColor;
-@synthesize separatorColor;
+@synthesize ySeparatorColor;
 @synthesize yZeroLinesColor;
 @synthesize isShiftTraces;
 @synthesize lineWidth;

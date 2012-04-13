@@ -30,7 +30,7 @@ dispatch_source_t timerGCDOsci;
 		[numberOfChannels_outlet addItemWithTitle: [NSString stringWithFormat:@"%D", iTrace+1]];
 	[numberOfChannels_outlet selectItemAtIndex: osci.numberOfTraces-1];
 	[colorBackg_outlet setColor: [osci backgroundColor]];
-	[colorSeparators_outlet setColor: [osci separatorColor]];
+	[colorSeparators_outlet setColor: [osci ySeparatorColor]];
 	[colorYZeroLines_outlet setColor: [osci yZeroLinesColor]];
 	
 	// set up a grand-central-dispatch based timer task 
@@ -79,7 +79,7 @@ dispatch_source_t timerGCDOsci;
 	osci.isDrawYSeparators = ([sender state] == NSOnState);
 }
 - (IBAction) colorSeparators_action: (id) sender {
-	[osci setSeparatorColor: [sender color]];
+	[osci setYSeparatorColor: [sender color]];
 }
 
 
