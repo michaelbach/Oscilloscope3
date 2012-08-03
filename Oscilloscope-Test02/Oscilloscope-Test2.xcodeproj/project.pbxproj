@@ -142,7 +142,7 @@
 		8A2A51D414FD635000AC6FA6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 				ORGANIZATIONNAME = "Department of Ophthalmology, University Medical Center Freiburg";
 			};
 			buildConfigurationList = 8A2A51D714FD635000AC6FA6 /* Build configuration list for PBXProject "Oscilloscope-Test2" */;
@@ -265,6 +265,7 @@
 		8A2A51FC14FD635100AC6FA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Oscilloscope-Test2/Oscilloscope-Test2-Prefix.pch";
 				INFOPLIST_FILE = "Oscilloscope-Test2/Oscilloscope-Test2-Info.plist";
@@ -276,6 +277,7 @@
 		8A2A51FD14FD635100AC6FA6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Oscilloscope-Test2/Oscilloscope-Test2-Prefix.pch";
 				INFOPLIST_FILE = "Oscilloscope-Test2/Oscilloscope-Test2-Info.plist";
@@ -303,6 +305,7 @@
 				8A2A51FD14FD635100AC6FA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

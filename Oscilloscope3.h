@@ -54,9 +54,15 @@ In Interface Builder: instantiate a Custom View, set it's class to Oscilloscope2
 @property	(readonly)	CGFloat width, height;					// view dimensions
 - (void)	setColor: (NSColor *) color;						// switches to single channel mode. Default: dark blue.
 - (void)	setColor: (NSColor *) color forTrace: (NSUInteger) iTrace;// multichannel; there are 7 predefined colors
+#if !__has_feature(objc_arc)
 @property	(retain)	NSColor *backgroundColor;				// default: very light grey
 @property	(retain)	NSColor *ySeparatorColor;				// default: grey
 @property	(retain)	NSColor *yZeroLinesColor;				// default: grey
+#else
+@property	(strong)	NSColor *backgroundColor;				// default: very light grey
+@property	(strong)	NSColor *ySeparatorColor;				// default: grey
+@property	(strong)	NSColor *yZeroLinesColor;				// default: grey
+#endif
 @property	(readwrite) CGFloat lineWidth;						// the pensize for the traces
 @property	(readwrite) BOOL isTraceZeroTop;					// trace ordering: trace zero is on top, or on bottom
 @property	(readwrite)	BOOL isShiftTraces;						// if YES: traces are moving, new values at right. Else just replacing

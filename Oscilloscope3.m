@@ -39,13 +39,22 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 		[self setIsDrawYSeparators: YES];
 		[self setYSeparatorColor: [NSColor grayColor]];
 		[self setLineWidth: 1.0f];
+		
+#if !__has_feature(objc_arc)
 		allTraces = [[NSMutableArray arrayWithCapacity: maxNumberOfTraces] retain];
-		for (NSUInteger iTrace=0; iTrace<maxNumberOfTraces; ++iTrace) 
+#else
+		allTraces = [NSMutableArray arrayWithCapacity: maxNumberOfTraces];
+#endif
+		for (NSUInteger iTrace=0; iTrace<maxNumberOfTraces; ++iTrace)
 			[allTraces addObject: [NSMutableArray arrayWithCapacity: numberOfPoints]];
 		for (NSMutableArray *aTrace in allTraces)	// initialise all traces to 0.0
 			for (NSUInteger i=0; i<numberOfPoints; ++i) [aTrace addObject: [NSNumber numberWithFloat:0.0f]];
 		[self setBackgroundColor: [NSColor colorWithDeviceWhite: 0.9f alpha: 1.0f]];
+#if !__has_feature(objc_arc)
 		traceColors = [[NSMutableArray arrayWithCapacity: maxNumberOfTraces] retain];
+#else
+		traceColors = [NSMutableArray arrayWithCapacity: maxNumberOfTraces];
+#endif
 		[traceColors addObject: [NSColor colorWithDeviceHue: 0.667 saturation: 1.0 brightness: 0.6 alpha: 1.0]];	// dunkles Blau
 		[traceColors addObject: [NSColor colorWithDeviceHue: 0.250 saturation: 1.0 brightness: 0.5 alpha: 1.0]];	// dunkles Grün
 		[traceColors addObject: [NSColor colorWithDeviceHue: 0.000 saturation: 1.0 brightness: 0.7 alpha: 1.0]];	// dunkles Rot
@@ -132,14 +141,18 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 }
 
 
-- (void) advanceWithSample: (CGFloat) sampleValue {	// single channel
+// single channel
+- (void) advanceWithSample: (CGFloat) sampleValue {
 	[self setNumberOfTraces: 1];
 	[self advanceWithSamples: [NSArray arrayWithObject: [NSNumber numberWithFloat: sampleValue]]];
 }
 
-- (void) advanceWithSamples: (NSArray *) sampleArray {		// multichannel
+
+// multichannel
+- (void) advanceWithSamples: (NSArray *) sampleArray {	//	NSLog(@"%s", __PRETTY_FUNCTION__);
 	static NSUInteger sampleIndex = 0;  sampleIndex = (sampleIndex+1) % numberOfPoints;
 	NSUInteger nTraces = min(maxNumberOfTraces, sampleArray.count);
+//	NSLog(@"nTraces %d", nTraces);
 	if (nTraces != numberOfTraces) numberOfTraces = nTraces;
 	for (NSUInteger iTrace = 0; iTrace < nTraces; ++iTrace) {
 		NSMutableArray *aTrace = [allTraces objectAtIndex: iTrace];

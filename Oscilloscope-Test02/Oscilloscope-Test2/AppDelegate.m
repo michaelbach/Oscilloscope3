@@ -27,7 +27,7 @@ dispatch_source_t timerGCDOsci;
 	// set up the demo GUI
 	[numberOfChannels_outlet removeAllItems];
 	for (NSUInteger	iTrace=0; iTrace < osci.maxNumberOfTraces; ++iTrace)
-		[numberOfChannels_outlet addItemWithTitle: [NSString stringWithFormat:@"%D", iTrace+1]];
+		[numberOfChannels_outlet addItemWithTitle: [NSString stringWithFormat:@"%lu", iTrace+1]];
 	[numberOfChannels_outlet selectItemAtIndex: osci.numberOfTraces-1];
 	[colorBackg_outlet setColor: [osci backgroundColor]];
 	[colorSeparators_outlet setColor: [osci ySeparatorColor]];
