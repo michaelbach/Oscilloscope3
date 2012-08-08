@@ -13,7 +13,7 @@
 		8A2A51F214FD635100AC6FA6 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 8A2A51F014FD635100AC6FA6 /* Credits.rtf */; };
 		8A2A51F514FD635100AC6FA6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A51F414FD635100AC6FA6 /* AppDelegate.m */; };
 		8A2A51F814FD635100AC6FA6 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A2A51F614FD635100AC6FA6 /* MainMenu.xib */; };
-		8A2A522D14FD63C000AC6FA6 /* Oscilloscope3.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A521F14FD63C000AC6FA6 /* Oscilloscope3.m */; };
+		8A2A522D14FD63C000AC6FA6 /* Oscilloscope3.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A2A521F14FD63C000AC6FA6 /* Oscilloscope3.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -222,6 +222,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -248,6 +251,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_OBJCPP_ARC_ABI = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -265,7 +271,7 @@
 		8A2A51FC14FD635100AC6FA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Oscilloscope-Test2/Oscilloscope-Test2-Prefix.pch";
 				INFOPLIST_FILE = "Oscilloscope-Test2/Oscilloscope-Test2-Info.plist";
@@ -277,7 +283,7 @@
 		8A2A51FD14FD635100AC6FA6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Oscilloscope-Test2/Oscilloscope-Test2-Prefix.pch";
 				INFOPLIST_FILE = "Oscilloscope-Test2/Oscilloscope-Test2-Info.plist";

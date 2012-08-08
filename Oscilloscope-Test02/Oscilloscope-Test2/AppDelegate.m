@@ -15,9 +15,6 @@ dispatch_source_t timerGCDOsci;
 
 @synthesize window = _window;
 
-- (void)dealloc {
-    [super dealloc];
-}
 
 
 - (void)applicationDidFinishLaunching: (NSNotification *)aNotification {	NSLog(@"%s", __PRETTY_FUNCTION__);

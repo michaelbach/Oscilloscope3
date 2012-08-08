@@ -28,6 +28,6 @@
 - (IBAction) colorBackg_action: (id) sender;
 
 
-@property (assign) IBOutlet NSWindow *window;
+@property (weak) IBOutlet NSWindow *window;
 
 @end
