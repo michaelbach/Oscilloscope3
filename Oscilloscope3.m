@@ -16,15 +16,6 @@ static CGPoint cgPointsArray[kNumPointsMax1];
 #define min(x,y) ((x) > (y)) ? (y) : (x)
 
 
-static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
-	NSColor *deviceColor = [color colorUsingColorSpaceName: NSDeviceRGBColorSpace];
-	CGFloat components[4];
-	[deviceColor getRed: &components[0] green: &components[1] blue: &components[2] alpha: &components[3]];
-	CGColorRef cgColor = CGColorCreate(CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB), components);
-	return cgColor;
-}
-
-
 - (id) initWithFrame:(NSRect)frameRect {	//	NSLog(@"%s", __PRETTY_FUNCTION__);
 	if ((self = [super initWithFrame: frameRect]) != nil) {
 		width = frameRect.size.width;  height = frameRect.size.height;
@@ -83,20 +74,16 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 	height = aRect.size.height; // so resizing works at least vertically
 	
 	cgc = [[NSGraphicsContext currentContext] graphicsPort];
-	CGColorRef col = cgColorCreateFromNSColor(backgroundColor);
-	CGContextSetFillColorWithColor(cgc, col);
+	CGContextSetFillColorWithColor(cgc, [backgroundColor CGColor]);
 	CGContextFillRect(cgc, NSRectToCGRect(aRect));  // first fill the background
-	CGColorRelease(col);
 	
 	CGFloat traceHeight = height / numberOfTraces;
 	NSUInteger numPnts = [[allTraces objectAtIndex:0] count];
 	if ([self isDrawYSeparators]) {		// draw trace separator lines
 		for (NSUInteger iTrace = 1; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight;
-			col = cgColorCreateFromNSColor(ySeparatorColor);
-			CGContextSetStrokeColorWithColor(cgc, col);
+			CGContextSetStrokeColorWithColor(cgc, [ySeparatorColor CGColor]);
 			[self hLineContext: cgc x0:0 y:y x1:numPnts];
-			CGColorRelease(col);
 		}
 	}
 
@@ -105,8 +92,7 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 		CGContextSetLineWidth(cgc, self.lineWidth);
 		CGFloat yTrace = (isTraceZeroTop) ? (numberOfTraces-iTrace-0.5) : (iTrace+0.5);
 		CGContextBeginPath(cgc);
-		col = cgColorCreateFromNSColor([traceColors objectAtIndex: (iTrace % traceColors.count)]);
-		CGContextSetStrokeColorWithColor(cgc, col);
+		CGContextSetStrokeColorWithColor(cgc, [[traceColors objectAtIndex: (iTrace % traceColors.count)] CGColor]);
 		
 		if (numPnts < kNumPointsMax1) {
 			for (NSUInteger iSample=0; iSample < numPnts; ++iSample) {
@@ -122,7 +108,6 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 			}
 		}
 		CGContextStrokePath(cgc);
-		CGColorRelease(col);
 	}
 	
 	if ([self isDrawYZeroLines]) {		// draw y-zero lines (last so the pattern is lost)
@@ -130,10 +115,8 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 		CGFloat lengths[1] = {2};  CGContextSetLineDash(cgc, 0, lengths, 1);		
 		for (NSUInteger iTrace = 0; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight - 0.5*traceHeight;
-			col = cgColorCreateFromNSColor(yZeroLinesColor);
-			CGContextSetStrokeColorWithColor(cgc, col);
+			CGContextSetStrokeColorWithColor(cgc, [yZeroLinesColor CGColor]);
 			[self hLineContext: cgc x0:0 y:y x1:numPnts];
-			CGColorRelease(col);
 		}
 	}
 //	NSLog(@"%u", [self numberOfTraces]);
