@@ -3,7 +3,7 @@
 #import "Oscilloscope3.h"
 
 
-@implementation Oscilloscope3;
+@implementation Oscilloscope3
 
 
 static NSMutableArray  *traceColors, *allTraces; // has maxChannels objects, each is a mutable array of samples
@@ -20,9 +20,9 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 	NSColor *deviceColor = [color colorUsingColorSpaceName: NSDeviceRGBColorSpace];
 	CGFloat components[4];
 	[deviceColor getRed: &components[0] green: &components[1] blue: &components[2] alpha: &components[3]];
-	return CGColorCreate(CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB), components);
+	CGColorRef cgColor = CGColorCreate(CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB), components);
+	return cgColor;
 }
-
 
 
 - (id) initWithFrame:(NSRect)frameRect {	//	NSLog(@"%s", __PRETTY_FUNCTION__);
@@ -48,7 +48,7 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 		for (NSUInteger iTrace=0; iTrace<maxNumberOfTraces; ++iTrace)
 			[allTraces addObject: [NSMutableArray arrayWithCapacity: numberOfPoints]];
 		for (NSMutableArray *aTrace in allTraces)	// initialise all traces to 0.0
-			for (NSUInteger i=0; i<numberOfPoints; ++i) [aTrace addObject: [NSNumber numberWithFloat:0.0f]];
+			for (NSUInteger i=0; i<numberOfPoints; ++i) [aTrace addObject: @0.0f];
 		[self setBackgroundColor: [NSColor colorWithDeviceWhite: 0.9f alpha: 1.0f]];
 #if !__has_feature(objc_arc)
 		traceColors = [[NSMutableArray arrayWithCapacity: maxNumberOfTraces] retain];
@@ -89,7 +89,7 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 	CGColorRelease(col);
 	
 	CGFloat traceHeight = height / numberOfTraces;
-	NSUInteger numPnts = [[allTraces objectAtIndex: 0] count];
+	NSUInteger numPnts = [[allTraces objectAtIndex:0] count];
 	if ([self isDrawYSeparators]) {		// draw trace separator lines
 		for (NSUInteger iTrace = 1; iTrace < numberOfTraces; ++iTrace) { 
 			CGFloat y = ((isTraceZeroTop) ? (numberOfTraces-iTrace) : (iTrace)) * traceHeight;
@@ -144,7 +144,7 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 // single channel
 - (void) advanceWithSample: (CGFloat) sampleValue {
 	[self setNumberOfTraces: 1];
-	[self advanceWithSamples: [NSArray arrayWithObject: [NSNumber numberWithFloat: sampleValue]]];
+	[self advanceWithSamples: @[[NSNumber numberWithFloat: sampleValue]]];
 }
 
 
@@ -176,12 +176,14 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 	NSMutableArray *aTrace = [allTraces objectAtIndex: iTrace];
 	while (sweep.count > numberOfPoints) {	// while the sweep is longer than the trace, we decimate by 2 until it fits
 		NSMutableArray *a = [NSMutableArray arrayWithCapacity:sweep.count/2];
-		for (NSUInteger i = 0; i<sweep.count/2; ++i) [a addObject:[NSNumber numberWithFloat: 0.5*([[sweep objectAtIndex:i*2] floatValue] + [[sweep objectAtIndex:i*2+1] floatValue])]];
+		for (NSUInteger i = 0; i<sweep.count/2; ++i) [a addObject:
+													  [NSNumber numberWithFloat:
+													   0.5*([[sweep objectAtIndex:i*2] floatValue] + [[sweep objectAtIndex: i*2+1] floatValue])]];
 		sweep = [NSArray arrayWithArray: a];
 	}
-	NSNumber *aNAN = [NSNumber numberWithFloat:NAN];
+	NSNumber *aNAN = @(NAN);
 	for (NSUInteger iSmpl=0; iSmpl<numberOfPoints; ++iSmpl)
-		[aTrace replaceObjectAtIndex:iSmpl withObject: ((iSmpl < sweep.count) ? [sweep objectAtIndex:iSmpl] : aNAN)];
+		[aTrace replaceObjectAtIndex: iSmpl withObject: ((iSmpl < sweep.count) ? [sweep objectAtIndex: iSmpl] : aNAN)];
 	[self setNeedsDisplay:YES];
 }
 
@@ -218,7 +220,7 @@ static CGColorRef cgColorCreateFromNSColor(NSColor *color) {
 
 @synthesize maxNumberOfTraces;
 
-- (NSUInteger) numberOfTraces {return numberOfTraces;};
+- (NSUInteger) numberOfTraces {return numberOfTraces;}
 - (void) setNumberOfTraces:(NSUInteger) n {
 	numberOfTraces = (n > maxNumberOfTraces) ? maxNumberOfTraces : n;
 }
