@@ -14,11 +14,12 @@ Entire sweeps can also be displayed with setTrace:toSweep: / setSingleTraceToSwe
 0 is in the vertical center, the vertical scaling is addressed by calling setMaxPositiveValue:.
  
 
-To insert in your program
+To insert into your program
 -------------------------
 * In your controller class: 
 create an Oscilloscope2* IBOutlet.
 * In Interface Builder: instantiate a Custom View, set it's class to Oscilloscope3, then connect it with the appropriae IBOutlet.
+
 
 Options
 -------
@@ -28,6 +29,7 @@ Options
 * dashed zero line
 
 
-Limitations
------------
-The present version only runs in 10.8(+) due to use of the new methode "CGColor"
+Some details
+------------
+* The present version only runs in 10.8(+) due to use of the new method "CGColor"
+* Difference to the former "Oscilloscope2": Oscilloscope3 is drawing with Core Graphics throughout rather than quartz. Was hoping for a little speed improvement. What really improves speed: going to opengel (see Oscilloscope2OGL for that)
