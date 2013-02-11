@@ -7,6 +7,8 @@
 //	History
 //	=======
 //
+//	2013-02-06	now used the new "CGColor" method for much easier conversion between NS- and CG-Colour -- gets rid of a memory leak to boot
+//	2012-08-21	added conditional ARC compilation
 //  2012-04-12  corrected inconsequential typo, dropped the colorspace argument
 //	2012-03-22	a number of asthetic improvements, also added setTraceToCGFloatArray & zero lines, some properties renamed
 //	2012-02-28	used "CGContextAddLines", should speed up
