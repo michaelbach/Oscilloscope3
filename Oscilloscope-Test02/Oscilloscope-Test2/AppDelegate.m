@@ -17,7 +17,7 @@ dispatch_source_t timerGCDOsci;
 
 
 
-- (void)applicationDidFinishLaunching: (NSNotification *)aNotification {	NSLog(@"%s", __PRETTY_FUNCTION__);
+- (void)applicationDidFinishLaunching: (NSNotification *)aNotification {	//NSLog(@"%s", __PRETTY_FUNCTION__);
 	// set some properties of the oscilloscope
 	osci.fullscale = 5.0;  osci.numberOfTraces = 5;
 	

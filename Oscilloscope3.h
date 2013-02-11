@@ -19,18 +19,6 @@
 //	2010-02-24	added gray dividing lines between traces
 //	2010-02-23	lots of recent changes, today added decimation in "setTrace"
 //	2009-12-30	added @property
-/*
-This oscilloscope can have one or up to kOscilloscopeMaxNumberOfTraces traces.
-Most calls are availabe in both single- and multichannel mode.
- 
-The oscilloscope advances 1 point in device space per call (advanceWithSample(s))
-Entire sweeps can also be displayed with setTrace:toSweep: / setSingleTraceToSweep:
-0 is in the center, the vertical scaling is addressed by calling setMaxPositiveValue:.
- 
-To insert in your program:
-In your controller class: create an Oscilloscope2* IBOutlet.
-In Interface Builder: instantiate a Custom View, set it's class to Oscilloscope2, then connect it with the IBOutlet.
-*/
 
 
 @interface Oscilloscope3 : NSView {
